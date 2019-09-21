@@ -2,6 +2,8 @@ PFont mediumFont;//font needed for screen
 PFont Font1;//font needed for screen
 int state=0;// to start the page
 // added random comment
+boolean gameover = false; 
+
 
 PImage backGround; // background
 PImage initState;//initial char render
@@ -28,6 +30,7 @@ PImage soldier_right;
 PImage img_holder; 
 PImage img_holder2;
 PImage img_holder3;
+PImage fgame, starting_pg, winner_pg; 
 
 
 
@@ -57,14 +60,15 @@ int xdirection =1;
 void setup() {
   size (1280, 720); 
   background(200); 
-  
-
   backGround = loadImage ("background.png"); 
   blackHole = loadImage ("blackhole.gif");
   soldier_down = loadImage ("soldier_t.png");
   soldier_up = loadImage("soldier.png");
   soldier_left = loadImage("soldier_l.png");
   soldier_right = loadImage("soldier_r.png"); 
+  starting_pg = loadImage("TitleScreen.png");
+  winner_pg = loadImage("GameWin.png");
+  fgame = loadImage("GameOver.png");
   alien_right = loadImage("alien.png");
   alien_left = loadImage("alien_l.png");
   img_holder = blackHole;
@@ -91,6 +95,10 @@ void setup() {
 }
 
 void draw() {
+  if (state == 0) {
+    startscreen();
+  }
+  else if (!gameover) { 
   image (backGround, 0, 0); 
   image(soldier_up, x_soldier, y_soldier);
   image(soldier_right,x_soldier2,y_soldier2);
@@ -182,24 +190,59 @@ void draw() {
   
   
   
-  
-  
+ 
   
   //===================================================================//        //collision machanic //
   if(pp_collision(rock1,400,200,initState,x1,y1)){
-    text("hello",200,100);
+    text("Oh snap! That hurt!!!", 200, 100); 
+    textSize(35);
+    fill(255, 0, 0);
   }
   
   if(pp_collision(rock2,800,301,initState,x1,y1)){
-    text("OOH SHIT",200,100);                                                  
+    text("Oh snap! That hurt!!!", 200, 100); 
+    textSize(35);
+    fill(255, 0, 0);                                               
   }
   
    if(pp_collision(rock3,200,500,initState,x1,y1)){
-    text("OOH SHIT",200,100);
+    text("Oh snap! That hurt!!!", 200, 100); 
+    textSize(35);
+    fill(255, 0, 0);
   }
   
   if(pp_collision(soldier_up,x_soldier,y_soldier,initState,x1,y1)){
-    text("FK YOUUU",200,100);
+    gameover = true; 
+    textSize(35);
+    image(fgame, 0, 0, 1280, 720);
+    fill(255, 0, 0);
+  }
+   if(pp_collision(soldier_right,x_soldier2,y_soldier2,initState,x1,y1)){
+    gameover = true; 
+    textSize(35);
+    image(fgame, 0, 0, 1280, 720);
+    fill(255, 0, 0);
+  }
+  if(pp_collision(tank1,x_tank,y_tank,initState,x1,y1)){
+    gameover = true; 
+    textSize(35);
+    image(fgame, 0, 0, 1280, 720);
+    fill(255, 0, 0);
+  }
+  if(pp_collision(tank2,x_tank2,y_tank2,initState,x1,y1)){
+    gameover = true; 
+    textSize(35);
+    image(fgame, 0, 0, 1280, 720);
+    fill(255, 0, 0);
+  }
+  if(pp_collision(alien_right,x_alien,y_alien,initState,x1,y1)){
+    textSize(35);
+    image(winner_pg, 0, 0, 1280, 720);
+    fill(255, 0, 0);
+    gameover = true; 
+  }
+   } else {
+      gameover = true; 
   }
   //=====================================================================//
 }
@@ -221,7 +264,34 @@ void keyPressed(){
     y1=y1+10; 
     initState=down1;
   }
-} 
+}
+
+void startscreen() {
+
+  background(#c4aca8);
+  textAlign(CENTER);
+  fill(#660d0d);
+  text("   Game", 200, 100); 
+  textAlign(CENTER);
+  fill(#660d0d);
+  text("    1. 1. Use arrows to control the players speed,You have functions such as left and right", 200, 160); 
+  text("     2. Do not allign with villan", 200, 180); 
+  text("     3. The only function is right-left or left-right", 200, 200); 
+  text("    4. Click START to begin (:", 200, 220); 
+  stroke(#660d0d); 
+  strokeWeight(1); 
+  fill(#ffffff);        
+  textAlign(CENTER);
+  fill(#660d0d);
+  image(starting_pg,  0, 0, 1280, 720);
+  text("START", 1100, 640); 
+  textSize(50);
+  if (mousePressed == true) {
+    if (mouseX <=1100 && mouseX >= 640 ) {
+      state=1;
+    }
+  }
+}
 
 
 final int ALPHALEVEL = 20;
