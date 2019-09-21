@@ -11,12 +11,14 @@ PImage army; // enemy1
 PImage blackHole; // enemy2
 PImage truck; // enemy3
 PImage rocks; // enemy4
+PImage tank; 
 
 int x1= 425;
 int y1= 130; 
 int x2= 500;
 int y2= 100; 
 
+float x_tank, y_tank, x_speed = 5;
 
 int rad = 60;        // Width of the shape -- needed so that imgs can stay within frame
 
@@ -34,10 +36,10 @@ void setup() {
   backGround = loadImage ("background.png"); 
   blackHole = loadImage ("blackhole.gif");
   soldier = loadImage ("soldier.png"); 
+  tank = loadImage ("tank_1.png");
   down1 = loadImage ("https://www.openprocessing.org/sketch/467916/files/rpg_battle_sprite_by_disnie-d80y5td.png"); 
   down2 = loadImage ("https://www.openprocessing.org/sketch/467916/files/2.png"); 
   up1 = loadImage ("https://www.openprocessing.org/sketch/469305/files/3.png"); 
-  
   xpos = 0;
   ypos = height/2;
 }
@@ -50,7 +52,11 @@ void draw() {
   if (ypos > height-rad || ypos < rad) {
     ydirection *= -1;
   }
-
+  x_tank += x_speed; 
+  image(tank, x_tank, y_tank, 100, 100);
+  if (x_tank > width || x_tank < 0) {
+    x_speed *= -1; 
+  }
 }
      
 void keyPressed(){ 
@@ -68,4 +74,4 @@ void keyPressed(){
     y1=y1+10; 
     down1=down2;
   }
-}
+} 
