@@ -1,6 +1,7 @@
 PFont mediumFont;//font needed for screen
 PFont Font1;//font needed for screen
 int state=0;// to start the page
+// added random comment
 boolean gameover=false;
 PImage backGround; // background
 PImage soldier; // cow
@@ -14,25 +15,20 @@ PImage army; // enemy1
 PImage blackHole; // enemy2
 PImage truck; // enemy3
 PImage rocks; // enemy4
-PImage tank1; 
-PImage tank2;
+PImage tank; 
 PImage rock1; 
 PImage rock2;
-PImage rock3;
 PImage soldier_down; 
 PImage img_holder; 
-PImage fgame;
-PImage starting_pg;
-
+PImage gamover;
 
 
 int x1= 425;
 int y1= 130; 
+int x2= 500;
+int y2= 100; 
 
-
-float x_tank, y_tank, x1_speed = 5,y1_speed=3;
-float x_tank2 ,y_tank2,x2_speed=7,y2_speed=4;
-int tank_dir_x = 1, tank_dir_y =1;
+float x_tank, y_tank, x_speed = 5;
 
 int rad = 60;        // Width of the shape -- needed so that imgs can stay within frame
 
@@ -52,13 +48,9 @@ void setup() {
   soldier_down = loadImage ("soldier_t.png");
   soldier = loadImage("soldier.png");
   img_holder = blackHole;
-  fgame = loadImage("GameOver.png");
-  starting_pg = loadImage("TitleScreen.png");
-  tank1 = loadImage ("tank_1.png");
-  tank2 = loadImage ("tank_2.png");
+  tank = loadImage ("tank_1.png");
   rock1 = loadImage ("rocks_1.png");
   rock2 = loadImage ("rocks_2.png");
-  rock3 = loadImage("rocks_2.png");
   initState = loadImage("char_front.png");
   down1 = loadImage ("char_front.png"); 
   up1 = loadImage ("char_back.png"); 
@@ -66,25 +58,24 @@ void setup() {
   right = loadImage("char_right.png");
   x_solder = 0;
   y_solder = height/2;
+  // COME BACK TO THESE TWO -- COLLISION
+  //down1_x = (width - down1.width)/2;
+  //down1_y = (height - down1.height)/2;
 }
 
 void draw() {
   if (state == 0) {            // Start Screen= state, if state does equal to 0 then the method startscreen will print
     startscreen();
-  } 
-  else if (!gameover) { 
-    image (backGround, 0, 0); 
-    image(soldier, x_solder, y_solder);
-    image (initState, x1, y1, 55, 75); 
-    image(rock1,  400, 200, 180, 180);
-    image(rock2,  800, 301, 80, 80);
-    image(rock3,  150, 500, 180, 180);
-    boolean facing = true; 
-  
-  //=================================================================//            //soldier attribute //
-  
-    y_solder = y_solder + ( yspeed * ydirection );
-    if (y_solder > height-rad || y_solder < rad) {
+  } else if (!gameover) { 
+  image (backGround, 0, 0); 
+  image(soldier, x_solder, y_solder);
+  image (initState, x1, y1, 55, 75); 
+  image(rock1,  400, 200, 180, 180);
+  image(rock2,  800, 301, 80, 80);
+  image(rock2,  150, 500, 180, 180);
+  boolean facing = true; 
+  y_solder = y_solder + ( yspeed * ydirection );
+  if (y_solder > height-rad || y_solder < rad) {
       ydirection *= -1;
       if (facing) { 
         img_holder=soldier;
@@ -95,63 +86,26 @@ void draw() {
           facing = true; 
           soldier_down = soldier;
       }
-    }
- 
-//=================================================================//  
-    x_tank =x_tank +( x1_speed *tank_dir_x); 
-    y_tank =y_tank +(y1_speed*tank_dir_y);
-    if ((x_tank > width-rad||x_tank<0)) {
-      tank_dir_x *= -1; 
-    }
-    if((y_tank>height-rad||y_tank<0)){
-      tank_dir_y*=-1;
-    }
-    image(tank1, x_tank, y_tank, 100, 100);
-                                                                        //TANK Movement 
-  
-    x_tank2 =x_tank2 +((x2_speed) *tank_dir_x);   
-     if ((x_tank2 > width-rad||x_tank2<0)) {
-      tank_dir_x *= -1; 
-    }
-    if((y_tank2>height-rad||y_tank2<0)){
-      tank_dir_y*=-1;
-    }
-    image(tank2, x_tank2, y_tank2, 80, 80);
-  
-  //===================================================================//
-  
-  
-  
-  
-  //===================================================================//        //collision machanic //
-   if(pp_collision(rock1,400,200,initState,x1,y1)){
-     gameover = true; 
-     textSize(35);
-     image(fgame,  0, 0, 1280, 720);
-     fill(255, 0, 0);
-    }
-   if(pp_collision(rock2,800,301,initState,x1,y1)){
-     gameover = true; 
-     textSize(35);
-     image(fgame,  0, 0, 1280, 720);
-     fill(255, 0, 0);
-    }
-   if(pp_collision(rock3,200,500,initState,x1,y1)){
-     gameover = true; 
-     textSize(35);
-     image(fgame,  0, 0, 1280, 720);
-     fill(255, 0, 0);
-   }
-   if(pp_collision(soldier,x_solder,y_solder,initState,x1,y1)){
-     gameover = true; 
-     textSize(35);
-     image(fgame,  0, 0, 1280, 720);
-     fill(255, 0, 0);
-    }
-  }//=====================================================================//
-    else {
       gameover=true;
-    }
+      gamover=
+  }
+  x_tank += x_speed; 
+  image(tank, x_tank, y_tank, 100, 100);
+  if (x_tank > width || x_tank < 0) {
+    x_speed *= -1; 
+  }
+}
+  
+  // -----
+  
+  // COME BACK TO THIS -- COLLISION
+  // if(pp_collision(down1,down1_x,down1_y,f2,mouseX,mouseY)){
+  //  stroke(255,64,64);
+  //  strokeWeight(1);
+  //  noFill();
+  //  rect(f1x,f1y,f1.width,f1.height);
+  //  rect(mouseX,mouseY,f2.width,f2.height);
+  //}
 }
      
 void keyPressed(){ 
@@ -175,30 +129,39 @@ void keyPressed(){
 void startscreen() {
 
   background(#c4aca8);
+
+
+  //textFont(Font1);
   textAlign(CENTER);
   fill(#660d0d);
   text("   Game", 200, 100); 
+
+
+ // textFont(mediumFont);
   textAlign(CENTER);
   fill(#660d0d);
   text("    1. 1. Use arrows to control the players speed,You have functions such as left and right", 200, 160); 
   text("     2. Do not allign with villan", 200, 180); 
   text("     3. The only function is right-left or left-right", 200, 200); 
   text("    4. Click START to begin (:", 200, 220); 
+  
+
+
   stroke(#660d0d); 
   strokeWeight(1); 
   fill(#ffffff);        
+ // textFont(Font1);
   textAlign(CENTER);
   fill(#660d0d);
-  image(starting_pg,  0, 0, 1280, 720);
-  text("START", 1100, 640); 
-  textSize(50);
+  text("START", 200, 310); 
+
   if (mousePressed == true) {
-    if (mouseX <=1100 && mouseX >= 640 ) {
+    if (mouseX <=260 && mouseX >= 140 ) {
       state=1;
     }
   }
 }
-
+/* NEEDED FOR COLLISION -- COME BACK TO THIS
 final int ALPHALEVEL = 20;
 
 boolean pp_collision(PImage imgA, float aix, float aiy, PImage imgB, float bix, float biy) {
@@ -282,3 +245,4 @@ boolean pp_collision(PImage imgA, float aix, float aiy, PImage imgB, float bix, 
   }
   return foundCollision;
 }
+*/
