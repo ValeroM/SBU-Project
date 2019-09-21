@@ -15,19 +15,23 @@ PImage army; // enemy1
 PImage blackHole; // enemy2
 PImage truck; // enemy3
 PImage rocks; // enemy4
-PImage tank; 
+PImage tank1; 
+PImage tank2;
 PImage rock1; 
 PImage rock2;
+PImage rock3;
 PImage soldier_down; 
 PImage img_holder; 
 
 
+
 int x1= 425;
 int y1= 130; 
-int x2= 500;
-int y2= 100; 
 
-float x_tank, y_tank, x_speed = 5;
+
+float x_tank, y_tank, x1_speed = 5,y1_speed=3;
+float x_tank2 ,y_tank2,x2_speed=7,y2_speed=4;
+int tank_dir_x = 1, tank_dir_y =1;
 
 int rad = 60;        // Width of the shape -- needed so that imgs can stay within frame
 
@@ -42,14 +46,18 @@ int ydirection = 1;  // Top to Bottom
 void setup() {
   size (1280, 720); 
   background(200); 
+  
+
   backGround = loadImage ("background.png"); 
   blackHole = loadImage ("blackhole.gif");
   soldier_down = loadImage ("soldier_t.png");
   soldier = loadImage("soldier.png");
   img_holder = blackHole;
-  tank = loadImage ("tank_1.png");
+  tank1 = loadImage ("tank_1.png");
+  tank2 = loadImage ("tank_2.png");
   rock1 = loadImage ("rocks_1.png");
   rock2 = loadImage ("rocks_2.png");
+  rock3 = loadImage("rocks_2.png");
   initState = loadImage("char_front.png");
   down1 = loadImage ("char_front.png"); 
   up1 = loadImage ("char_back.png"); 
@@ -68,8 +76,11 @@ void draw() {
   image (initState, x1, y1, 55, 75); 
   image(rock1,  400, 200, 180, 180);
   image(rock2,  800, 301, 80, 80);
-  image(rock2,  150, 500, 180, 180);
+  image(rock3,  150, 500, 180, 180);
   boolean facing = true; 
+  
+  //=================================================================//            //soldier attribute //
+  
   y_solder = y_solder + ( yspeed * ydirection );
   if (y_solder > height-rad || y_solder < rad) {
       ydirection *= -1;
@@ -83,22 +94,52 @@ void draw() {
           soldier_down = soldier;
       }
   }
-  x_tank += x_speed; 
-  image(tank, x_tank, y_tank, 100, 100);
-  if (x_tank > width || x_tank < 0) {
-    x_speed *= -1; 
+ 
+//=================================================================//  
+  x_tank =x_tank +( x1_speed *tank_dir_x); 
+  y_tank =y_tank +(y1_speed*tank_dir_y);
+  
+  if ((x_tank > width-rad||x_tank<0)) {
+    tank_dir_x *= -1; 
+  }
+  if((y_tank>height-rad||y_tank<0)){
+    tank_dir_y*=-1;
+  }
+  image(tank1, x_tank, y_tank, 100, 100);
+                                                                        //TANK Movement 
+  
+  
+   x_tank2 =x_tank2 +((x2_speed) *tank_dir_x);   
+  if ((x_tank2 > width-rad||x_tank2<0)) {
+    tank_dir_x *= -1; 
+  }
+  if((y_tank2>height-rad||y_tank2<0)){
+    tank_dir_y*=-1;
+  }
+  image(tank2, x_tank2, y_tank2, 80, 80);
+  
+  //===================================================================//
+  
+  
+  
+  
+  //===================================================================//        //collision machanic //
+  if(pp_collision(rock1,400,200,initState,x1,y1)){
+    text("hello",200,100);
   }
   
-  // -----
+  if(pp_collision(rock2,800,301,initState,x1,y1)){
+    text("OOH SHIT",200,100);                                                  
+  }
   
-  // COME BACK TO THIS -- COLLISION
-  // if(pp_collision(down1,down1_x,down1_y,f2,mouseX,mouseY)){
-  //  stroke(255,64,64);
-  //  strokeWeight(1);
-  //  noFill();
-  //  rect(f1x,f1y,f1.width,f1.height);
-  //  rect(mouseX,mouseY,f2.width,f2.height);
-  //}
+   if(pp_collision(rock3,200,500,initState,x1,y1)){
+    text("OOH SHIT",200,100);
+  }
+  
+  if(pp_collision(soldier,x_solder,y_solder,initState,x1,y1)){
+    text("FK YOUUU",200,100);
+  }
+  //=====================================================================//
 }
      
 void keyPressed(){ 
@@ -120,7 +161,7 @@ void keyPressed(){
   }
 } 
 
-/* NEEDED FOR COLLISION -- COME BACK TO THIS
+
 final int ALPHALEVEL = 20;
 
 boolean pp_collision(PImage imgA, float aix, float aiy, PImage imgB, float bix, float biy) {
@@ -204,4 +245,3 @@ boolean pp_collision(PImage imgA, float aix, float aiy, PImage imgB, float bix, 
   }
   return foundCollision;
 }
-*/
