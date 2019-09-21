@@ -1,12 +1,16 @@
 PFont mediumFont;//font needed for screen
 PFont Font1;//font needed for screen
 int state=0;// to start the page
+// added random comment
 
 PImage backGround; // background
 PImage soldier; // cow
+PImage initState;//initial char render
 PImage down1; // person1
 PImage down2; // person1
 PImage up1; // person1
+PImage left; //person1
+PImage right; //person2
 PImage army; // enemy1
 PImage blackHole; // enemy2
 PImage truck; // enemy3
@@ -16,6 +20,7 @@ PImage rock1;
 PImage rock2;
 PImage soldier_down; 
 PImage img_holder; 
+
 
 int x1= 425;
 int y1= 130; 
@@ -45,9 +50,11 @@ void setup() {
   tank = loadImage ("tank_1.png");
   rock1 = loadImage ("rocks_1.png");
   rock2 = loadImage ("rocks_2.png");
-  down1 = loadImage ("https://www.openprocessing.org/sketch/467916/files/rpg_battle_sprite_by_disnie-d80y5td.png"); 
-  down2 = loadImage ("https://www.openprocessing.org/sketch/467916/files/2.png"); 
-  up1 = loadImage ("https://www.openprocessing.org/sketch/469305/files/3.png"); 
+  initState = loadImage("char_front.png");
+  down1 = loadImage ("char_front.png"); 
+  up1 = loadImage ("char_back.png"); 
+  left = loadImage("char_left.png");
+  right = loadImage("char_right.png");
   x_solder = 0;
   y_solder = height/2;
   // COME BACK TO THESE TWO -- COLLISION
@@ -58,7 +65,7 @@ void setup() {
 void draw() {
   image (backGround, 0, 0); 
   image(soldier, x_solder, y_solder);
-  image (down1, x1, y1, 55, 75); 
+  image (initState, x1, y1, 55, 75); 
   image(rock1,  400, 200, 180, 180);
   image(rock2,  800, 301, 80, 80);
   image(rock2,  150, 500, 180, 180);
@@ -97,17 +104,19 @@ void draw() {
 void keyPressed(){ 
   if (keyCode== RIGHT) { 
     x1=x1+10; // 
+    initState=right;
   }
   if (keyCode==LEFT) { 
-    x1= x1-10; // 
+    x1= x1-10;// 
+    initState=left;
   }
   if (keyCode== UP){
     y1=y1-10; 
-    down1=up1;
+    initState=up1;
   }
   if (keyCode== DOWN){
     y1=y1+10; 
-    down1=down2;
+    initState=down1;
   }
 } 
 
