@@ -294,7 +294,7 @@ void startscreen() {
   strokeWeight(1); 
   fill(#ffffff);        
   textAlign(CENTER);
-  fill(#660d0d);
+  fill(#ffffff);
   image(starting_pg,  0, 0, 1280, 720);
   text("START", 1100, 640); 
   textSize(50);
