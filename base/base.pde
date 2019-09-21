@@ -3,7 +3,7 @@ PFont Font1;//font needed for screen
 int state=0;// to start the page
 
 PImage backGround; // background
-PImage vaca; // cow
+PImage soldier; // cow
 PImage down1; // person1
 PImage down2; // person1
 PImage up1; // person1
@@ -11,64 +11,67 @@ PImage army; // enemy1
 PImage blackHole; // enemy2
 PImage truck; // enemy3
 PImage rocks; // enemy4
-
-
-int speed1 = 0;// Falling Speed
-int speed2= 3;//Falling Speed
-
-
+PImage tank; 
 
 int x1= 425;
 int y1= 130; 
 int x2= 500;
 int y2= 100; 
 
+float x_tank, y_tank, x_speed = 5;
+
+int rad = 60;        // Width of the shape -- needed so that imgs can stay within frame
+
+
+
+float xpos, ypos;    // Starting position of cow (aka soldier)   
+
+// both of these below are needed to move cow vertically
+float yspeed = 2.2;  // Speed of the shape 
+int ydirection = 1;  // Top to Bottom
+
 void setup() {
-  size (1280, 720); // Tamany del projecte.
-  background(200); // Color de fons (que no es veura ja que posarem la imatge que es de la mateixa mida).
-  backGround = loadImage ("https://www.openprocessing.org/sketch/467916/files/facfc027-7257-4422-bce9-adec4c359ce7.jpg"); // Càrrega de la imatge de fons.
-  vaca = loadImage ("https://www.openprocessing.org/sketch/467916/files/bloggif_59fa37a89fa9a.png"); // Càrrega de la vaquita felis.
-  down1 = loadImage ("https://www.openprocessing.org/sketch/467916/files/rpg_battle_sprite_by_disnie-d80y5td.png"); // Càrrega de la image personatge sense moure
-  down2 = loadImage ("https://www.openprocessing.org/sketch/467916/files/2.png"); // Carrega de la imatge del personatge movent-se cap avall
-  up1 = loadImage ("https://www.openprocessing.org/sketch/469305/files/3.png"); // Càrrega del personatge movent-se cap amunt
+  size (1280, 720); 
+  background(200); 
+  backGround = loadImage ("background.png"); 
+  blackHole = loadImage ("blackhole.gif");
+  soldier = loadImage ("soldier.png"); 
+  tank = loadImage ("tank_1.png");
+  down1 = loadImage ("https://www.openprocessing.org/sketch/467916/files/rpg_battle_sprite_by_disnie-d80y5td.png"); 
+  down2 = loadImage ("https://www.openprocessing.org/sketch/467916/files/2.png"); 
+  up1 = loadImage ("https://www.openprocessing.org/sketch/469305/files/3.png"); 
+  xpos = 0;
+  ypos = height/2;
 }
 
 void draw() {
-  image (backGround, 0, 0); // La imatge de fons es posa aquí per fer-la carregar tota l'estona per a que no es vegin altres pilotes
-  image (vaca, x2, y2, 50, 30); // Les coordenades de la bola fixa
-  image (down1, x1, y1, 55, 75); // Les coordenades de la bola que es mou
-  if ((x2>x1-30 && x2<x1+30) && (y2>y1-20 && y2<y1+20)){ // La condició per la col·lisió
-  fill (255);
-  rect(100, 320, 580, 80); // Rectangle que surt si estem al costat de La Vaquita Felis :3// error here 
-  fill (0);
-  text ("Hola soy la Vaquita Felis :3", 40, 340); // Text que surt dins del rect
-  text ("¿Dar de comer a la Vaquita Felis :3?", 40, 360); // Text que surt dins del rect
-  stroke(0); 
-  fill(255); 
-  rect (50, 370, 50, 20); // Primer rectangle 
-  rect (130, 370, 50, 20); // Segon rectangle
-  fill(0); 
-  text ("Chi :D", 60, 385); // Text del primer rectangle
-  text ("Nu >:D", 137, 385); // Text del segon rectangle
-  }}
-  
-  void mouseClicked(){ // Es fa un void mouseclicked perque hi hagi una accio quan prenem un dels 2 rectangles
-   if ((mouseX>50 && mouseX<70) && (mouseY>370 && mouseY<420)) // Condició del que passa si fem click al primer rect
-     rect (100, 100, 50, 50); // Es fa un rect 
-     text ("Le diste Hierbita a la Vaquita Felis :3", 100, 100); // Surt un text
-  // Hi ha un problema, es que només surt un frame ja que torna al void draw i en molt poc temps desapareix. Ho haig de mirar
+  image (backGround, 0, 0); 
+  image(soldier, xpos, ypos);
+  image (down1, x1, y1, 55, 75); 
+  ypos = ypos + ( yspeed * ydirection );
+  if (ypos > height-rad || ypos < rad) {
+    ydirection *= -1;
+  }
+  x_tank += x_speed; 
+  image(tank, x_tank, y_tank, 100, 100);
+  if (x_tank > width || x_tank < 0) {
+    x_speed *= -1; 
+  }
 }
-
-void keyPressed(){ // Aquest void ens permet interactuar amb tecles
-if (keyCode== RIGHT) //With the right key, the ball we want to move will move 3 pixels right
-  x1=x1+3; // 
-if (keyCode==LEFT)//With the left key, the ball we want to move will move 3 pixels left
-  x1= x1-3; // 
-if (keyCode== UP){
-  y1=y1-3; //With the upward key, the ball we want to move will move 3 pixels upwards
-  down1=up1;
-}
+     
+void keyPressed(){ 
+  if (keyCode== RIGHT) { 
+    x1=x1+10; // 
+  }
+  if (keyCode==LEFT) { 
+    x1= x1-10; // 
+  }
+  if (keyCode== UP){
+    y1=y1-10; 
+    down1=up1;
+  }
   if (keyCode== DOWN){
-  y1=y1+3; //With the down key, the ball we want to move will move 3 pixels down
-  down1=down2;}
-}
+    y1=y1+10; 
+    down1=down2;
+  }
+} 
